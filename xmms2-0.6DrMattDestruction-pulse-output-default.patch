@@ -1,0 +1,9 @@
+diff -up xmms2-0.6DrMattDestruction/src/plugins/pulse/wscript.BAD xmms2-0.6DrMattDestruction/src/plugins/pulse/wscript
+--- xmms2-0.6DrMattDestruction/src/plugins/pulse/wscript.BAD	2009-08-11 13:58:27.922241908 -0400
++++ xmms2-0.6DrMattDestruction/src/plugins/pulse/wscript	2009-08-11 13:58:32.982243043 -0400
+@@ -7,4 +7,4 @@ def plugin_configure(conf):
+ 
+ configure, build = plugin("pulse", configure=plugin_configure,
+                           source=["pulse.c", "backend.c"],
+-                          output_prio=25, libs=["pulse"])
++                          output_prio=45, libs=["pulse"])

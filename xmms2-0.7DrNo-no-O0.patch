@@ -1,0 +1,21 @@
+diff -up xmms2-0.7DrNo/wscript.noO0 xmms2-0.7DrNo/wscript
+--- xmms2-0.7DrNo/wscript.noO0	2010-02-19 12:43:54.000000000 -0500
++++ xmms2-0.7DrNo/wscript	2010-04-13 17:49:15.351789069 -0400
+@@ -275,7 +275,7 @@ def configure(conf):
+         conf.check_message("uncommitted changes", "", bool(changed))
+         conf.env["VERSION"] = BASEVERSION + " (git commit: %s%s)" % (nam, dirty)
+ 
+-    conf.env["CCFLAGS"] = Utils.to_list(conf.env["CCFLAGS"]) + ['-g', '-O0']
++    ## conf.env["CCFLAGS"] = Utils.to_list(conf.env["CCFLAGS"]) + ['-g', '-O0']
+     for warning in ('all',
+                     'no-format-extra-args',
+                     'no-format-zero-length',
+@@ -295,7 +295,7 @@ def configure(conf):
+             # autogenerate uselib definitions to disable warnings
+             conf.env["CCFLAGS_NO%s" % warning.replace("-","").upper()] = ["-Wno-%s" % warning]
+ 
+-    conf.env["CXXFLAGS"] = Utils.to_list(conf.env["CXXFLAGS"]) + ['-g', '-O0']
++    ## conf.env["CXXFLAGS"] = Utils.to_list(conf.env["CXXFLAGS"]) + ['-g', '-O0']
+     conf.env['XMMS_PKGCONF_FILES'] = []
+     conf.env['XMMS_OUTPUT_PLUGINS'] = [(-1, "NONE")]
+ 

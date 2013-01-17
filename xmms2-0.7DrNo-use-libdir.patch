@@ -1,0 +1,63 @@
+diff -up xmms2-0.7DrNo/src/include/xmms/wscript.plugins-use-libdir xmms2-0.7DrNo/src/include/xmms/wscript
+diff -up xmms2-0.7DrNo/wafadmin/Tools/ccroot.py.plugins-use-libdir xmms2-0.7DrNo/wafadmin/Tools/ccroot.py
+diff -up xmms2-0.7DrNo/wafadmin/Tools/gnu_dirs.py.plugins-use-libdir xmms2-0.7DrNo/wafadmin/Tools/gnu_dirs.py
+diff -up xmms2-0.7DrNo/wafadmin/Tools/libtool.py.plugins-use-libdir xmms2-0.7DrNo/wafadmin/Tools/libtool.py
+--- xmms2-0.7DrNo/wafadmin/Tools/libtool.py.plugins-use-libdir	2010-02-19 12:43:54.000000000 -0500
++++ xmms2-0.7DrNo/wafadmin/Tools/libtool.py	2010-04-13 17:45:12.718672360 -0400
+@@ -45,7 +45,7 @@ def fakelibtool_build(task):
+ 	fu("current=0\n")
+ 	fu("age=0\nrevision=0\ninstalled=yes\nshouldnotlink=no\n")
+ 	fu("dlopen=''\ndlpreopen=''\n")
+-	fu("libdir='%s/lib'\n" % env['PREFIX'])
++	fu("libdir='%s'\n" % env['LIBDIR'])
+ 	dest.close()
+ 	return 0
+ 
+@@ -71,7 +71,7 @@ def apply_link_libtool(self):
+ 		self.latask = self.create_task('fakelibtool', linktask.outputs, linktask.outputs[0].change_ext('.la'))
+ 
+ 	if self.bld.is_install:
+-		self.bld.install_files('${PREFIX}/lib', linktask.outputs[0], self.env)
++		self.bld.install_files('${LIBDIR}', linktask.outputs[0], self.env)
+ 
+ @feature("libtool")
+ @before('apply_core')
+diff -up xmms2-0.7DrNo/waftools/tool.py.plugins-use-libdir xmms2-0.7DrNo/waftools/tool.py
+--- xmms2-0.7DrNo/waftools/tool.py.plugins-use-libdir	2010-02-19 12:43:54.000000000 -0500
++++ xmms2-0.7DrNo/waftools/tool.py	2010-04-13 17:40:40.215663210 -0400
+@@ -6,5 +6,5 @@ def add_install_flag(bld, obj):
+ 
+     if env['explicit_install_name']:
+         libname = obj.env["shlib_PATTERN"] % obj.target
+-        insname = os.path.join(obj.env["PREFIX"], 'lib', libname)
++        insname = os.path.join(obj.env["LIBDIR"], libname)
+         obj.env.append_unique("LINKFLAGS", '-install_name ' + insname)
+--- xmms2-0.7DrNo/wafadmin/Tools/gnu_dirs.py.plugins-use-libdir	2010-04-13 18:02:40.858675994 -0400
++++ xmms2-0.7DrNo/wafadmin/Tools/gnu_dirs.py	2010-04-13 18:03:01.201810629 -0400
+@@ -44,7 +44,7 @@ libexecdir, program executables, ${EXEC_
+ sysconfdir, read-only single-machine data, ${PREFIX}/etc
+ sharedstatedir, modifiable architecture-independent data, ${PREFIX}/com
+ localstatedir, modifiable single-machine data, ${PREFIX}/var
+-libdir, object code libraries, ${EXEC_PREFIX}/lib
++libdir, object code libraries, ${LIBDIR}
+ includedir, C header files, ${PREFIX}/include
+ oldincludedir, C header files for non-gcc, /usr/include
+ datarootdir, read-only arch.-independent data root, ${PREFIX}/share
+--- xmms2-0.7DrNo/wafadmin/Tools/python.py.plugins-use-libdir	2010-04-13 18:15:49.402785506 -0400
++++ xmms2-0.7DrNo/wafadmin/Tools/python.py	2010-04-13 18:22:03.243800732 -0400
+@@ -342,13 +342,10 @@
+ 				python_LIBDEST = None
+ 				(pydir,) = \
+ 						_get_python_variables(python,
+-											  ["get_python_lib(standard_lib=0, prefix=%r)" % conf.env['PREFIX']],
++											  ["get_python_lib(1)"],
+ 											  ['from distutils.sysconfig import get_config_var, get_python_lib'])
+ 			if python_LIBDEST is None:
+-				if conf.env['LIBDIR']:
+-					python_LIBDEST = os.path.join(conf.env['LIBDIR'], "python" + pyver)
+-				else:
+-					python_LIBDEST = os.path.join(conf.env['PREFIX'], "lib", "python" + pyver)
++				python_LIBDEST = os.path.join(conf.env['LIBDIR'], "python" + pyver)
+ 
+ 		if hasattr(conf, 'define'): # conf.define is added by the C tool, so may not exist
+ 			conf.define('PYTHONDIR', pydir)
